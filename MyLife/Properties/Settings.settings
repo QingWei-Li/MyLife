@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MyLife.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="DBPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="InitSql" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">-- ----------------------------
+-- Table structure for Diaries
+-- ----------------------------
+DROP TABLE IF EXISTS "main"."Diaries";
+CREATE TABLE "Diaries" (
+"ID"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+"PubTime"  TEXT NOT NULL,
+"IsUpload"  INTEGER,
+"Title"  TEXT,
+"Contents"  TEXT
+);
+
+-- ----------------------------
+-- Table structure for Tree
+-- ----------------------------
+DROP TABLE IF EXISTS "main"."Tree";
+CREATE TABLE "Tree" (
+"ID"  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+"PID"  INTEGER,
+"DiaID"  INTEGER,
+"Name"  TEXT
+);</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

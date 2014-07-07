@@ -1,0 +1,68 @@
+﻿<Window x:Name="EditWindow" x:Class="MyLife.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MyLife.Model"
+        Title="MyLife" 
+        Height="600" 
+        Width="800" 
+        MinWidth="650"
+        MinHeight="488"
+        WindowStartupLocation="CenterScreen" 
+        Loaded="EditWindow_Loaded"  MouseDown="EditWindow_MouseDown" Closed="EditWindow_Closed">
+
+    <Grid Style="{DynamicResource gridStyle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".2*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition Width=".2*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height=".1*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition  Height=".2*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--侧边栏-->
+        <Grid Style="{DynamicResource gridStyle}" Name="gridSideBar" Grid.RowSpan="3" Grid.Column="0">
+            <DockPanel Name="SideBar" Style="{DynamicResource dpSideBarStyle}" Visibility="Hidden">
+                <Border  Name="tbSearch" Style="{DynamicResource bSearchStyle}" BorderBrush="#FF989CA1" Margin="10 20 10 10" BorderThickness="1" Height="20" CornerRadius="5" DockPanel.Dock="Top">
+                    <TextBox Style="{DynamicResource tbSearchStyle}" Height="20" Background="{x:Null}" BorderThickness="0"></TextBox>
+                </Border>
+                <TreeView Name="tvSideBar" DockPanel.Dock="Top"  SelectedItemChanged="tvSideBar_SelectedItemChanged">
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type local:TreeModel}" ItemsSource="{Binding Path=Nodes}">
+                            <StackPanel Orientation="Horizontal">
+                                <!--<Image Source="{Binding Name}" Width="16" Height="16"></Image>-->
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}"></TextBlock>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </DockPanel>
+        </Grid>
+
+        <!--编辑区-->
+        <Grid Grid.Column="1" Grid.Row="1" Name="gridEdit">
+                <RichTextBox Name="rtbEdit" Block.LineHeight="10" AcceptsTab="True" FontSize="20" PreviewDragEnter="rtbEdit_PreviewDragEnter" PreviewDragOver="rtbEdit_PreviewDragEnter" PreviewDrop="rtbEdit_PreviewDrop"/>
+            <PasswordBox Name="pswLogin" Margin="75,220,38,182.5" Height="30" FontSize="20" Background="{x:Null}"  BorderBrush="{x:Null}" Template="{DynamicResource PasswordBoxControlTemplate1}"/>
+        </Grid>
+        <!--右侧功能菜单-->
+        <Grid Style="{DynamicResource gridStyle}" Name="gridToolBar" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Stretch">
+            <StackPanel Name="ToolBar"  VerticalAlignment="Center" Visibility="Hidden">
+                <Button Style="{DynamicResource btnSideBar}" Content="保存" Name="btnSave" Click="btnSave_Click"></Button>
+                <Button Style="{DynamicResource btnSideBar}" Content="统计" Name="btnCount"></Button>
+                <Button Style="{DynamicResource btnSideBar}" Content="设置" Name="btnSet" Click="btnSet_Click"></Button>
+                <Button Style="{DynamicResource btnSideBar}" Content="导出" Name="btnExport"></Button>
+                <!--<Button Style="{DynamicResource btnSideBar}" Content="导入" Name="btnImport"></Button>-->
+                <Button Style="{DynamicResource btnSideBar}" Content="灯光" Name="btnLight" Click="btnLight_Click"></Button>
+                <Button Style="{DynamicResource btnSideBar}" Content="帮助" Name="btnHelper" Click="btnHelper_Click" ></Button>
+                <Button Style="{DynamicResource btnSideBar}" Content="退出" Name="btnClose" Click="btnClose_Click"></Button>
+            </StackPanel>
+        </Grid>
+        <!--底部统计信息-->
+        <Grid Grid.Row="3" Grid.Column="1" Background="{x:Null}">
+            <TextBlock Name="tbCount" Style="{DynamicResource tbCountStyle}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20"></TextBlock>
+        </Grid>
+        
+    </Grid>
+
+</Window>

@@ -1,0 +1,111 @@
+﻿<Window x:Class="MyLife.UI.SettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          Title="设置" Height="350" Width="400" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" MinHeight="350" MaxHeight="350" MaxWidth="400" MinWidth="400">
+    <Grid Style="{DynamicResource gridStyle}">
+        <TabControl Background="{x:Null}">
+            <TabItem Header="修改密码">
+                <Grid Style="{DynamicResource gridStyle}" Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0">原密码</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0">新密码</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0">确认密码</TextBlock>
+
+                    <PasswordBox Grid.Row="0" Grid.Column="1" Name="tbOldPwd"></PasswordBox>
+                    <PasswordBox Grid.Row="1" Grid.Column="1" Name="tbNewPwd"></PasswordBox>
+                    <PasswordBox Grid.Row="2" Grid.Column="1" Name="tbNewPwd2"></PasswordBox>
+
+                    <Button Grid.Row="4" Grid.Column="1" Name="bthPwdSet" Content="确定" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True"></Button>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="邮箱信息">
+                <Grid Style="{DynamicResource gridStyle}" Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0">邮箱</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0">密码</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0">服务商</TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="0">POP</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="0">端口</TextBlock>
+
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="tbMail"></TextBox>
+                    <PasswordBox Grid.Row="1" Grid.Column="1" Name="tbMailPwd"></PasswordBox>
+                    <ComboBox Grid.Row="2" Grid.Column="1" Name="tbFacilitator"></ComboBox>
+                    <TextBox Grid.Row="3" Grid.Column="1" Name="tbPOP"></TextBox>
+                    <TextBox Grid.Row="4" Grid.Column="1" Name="tbPort"></TextBox>
+
+                    <Button Grid.Row="5" Grid.Column="1" Name="bthMailSet" Content="确定" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True" Click="bthMailSet_Click"></Button>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="订阅设置">
+                <Grid Style="{DynamicResource gridStyle}" Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0">关键字</TextBlock>
+
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="tbKeyword"></TextBox>
+
+                    <Button Grid.Row="2" Grid.Column="1" Name="btnMailKeyword" Content="确定" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True" Click="btnMailKeyword_Click"></Button>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="导入数据">
+                <Grid Style="{DynamicResource gridStyle}" Margin="20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="1">暂未开发</TextBlock>
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+
+    </Grid>
+</Window>
