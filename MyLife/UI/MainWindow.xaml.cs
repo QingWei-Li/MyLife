@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
@@ -85,10 +84,11 @@ namespace MyLife
                 e.Handled = true;
                 try
                 {
-                    BindTree();
                     rtbEdit.Document.Blocks.Clear();
                     gridEdit.Children.Remove(pswLogin);
                     InitData();
+                    new DiaryBLL().Save(this.rtbEdit, DiaryTime);
+                    BindTree();
                     this.rtbEdit.Focus();
 
                     EditWindow.MouseDown -= PasswordFocus;
@@ -173,9 +173,9 @@ namespace MyLife
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
 
-            ////测试用的，暂时不删
-            //TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
-            //string xw = System.Windows.Markup.XamlWriter.Save(rtbEdit.Document);
+            //测试用的，暂时不删
+            TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
+            string xw = System.Windows.Markup.XamlWriter.Save(rtbEdit.Document);
 
             SaveEdit();
         }
@@ -203,6 +203,11 @@ namespace MyLife
             UI.SettingWindow swin = new UI.SettingWindow();
             swin.ShowDialog();
 
+        }
+        private void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            Helper.MailHelper.ReceiveMails(this.rtbEdit);
+            BindTree();
         }
 
         private void girdSideBar_MouseEnter(object sender, MouseEventArgs e)
@@ -295,7 +300,7 @@ namespace MyLife
 
             ta.Duration = TimeSpan.FromSeconds(0.2);
             sideBar.BeginAnimation(TextBlock.MarginProperty, ta);
-        }//侧边栏动画
+        }
 
     }
 }

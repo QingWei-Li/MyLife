@@ -40,25 +40,63 @@ namespace MyLife.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute(@"-- ----------------------------
 -- Table structure for Diaries
 -- ----------------------------
-DROP TABLE IF EXISTS ""main"".""Diaries"";
+DROP TABLE IF EXISTS ""Diaries"";
 CREATE TABLE ""Diaries"" (
 ""ID""  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 ""PubTime""  TEXT NOT NULL,
-""IsUpload""  INTEGER,
 ""Title""  TEXT,
 ""Contents""  TEXT
-);
+)
+
+;
+
+-- ----------------------------
+-- Records of Diaries
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for Settings
+-- ----------------------------
+DROP TABLE IF EXISTS ""Settings"";
+CREATE TABLE ""Settings"" (
+""Key""  TEXT NOT NULL,
+""Value""  TEXT,
+PRIMARY KEY (""Key"" ASC)
+)
+
+;
+
+-- ----------------------------
+-- Records of Settings
+-- ----------------------------
+BEGIN;
+INSERT INTO ""Settings"" (""Key"", ""Value"") VALUES ('Mail', null);
+INSERT INTO ""Settings"" (""Key"", ""Value"") VALUES ('MailPwd', null);
+INSERT INTO ""Settings"" (""Key"", ""Value"") VALUES ('POP', null);
+INSERT INTO ""Settings"" (""Key"", ""Value"") VALUES ('Port', null);
+INSERT INTO ""Settings"" (""Key"", ""Value"") VALUES ('Keyword', null);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for Tree
 -- ----------------------------
-DROP TABLE IF EXISTS ""main"".""Tree"";
+DROP TABLE IF EXISTS ""Tree"";
 CREATE TABLE ""Tree"" (
 ""ID""  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 ""PID""  INTEGER,
 ""DiaID""  INTEGER,
 ""Name""  TEXT
-);")]
+)
+
+;
+
+-- ----------------------------
+-- Records of Tree
+-- ----------------------------
+BEGIN;
+COMMIT;")]
         public string InitSql {
             get {
                 return ((string)(this["InitSql"]));

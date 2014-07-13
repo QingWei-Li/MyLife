@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 
 namespace MyLife.BLL
 {
@@ -44,14 +43,14 @@ namespace MyLife.BLL
             return null;
         }
 
-        internal bool Save(int id)
+        internal bool Save(int id,DateTime datetime)
         {
             bool isok = false;
             //保存树节点
             TreeDAL treeDal = new TreeDAL();
             TreeModel yearMonth = new TreeModel();
             TreeModel day = new TreeModel();
-            string NodeName = DateTime.Now.ToString("yyyy-MM");
+            string NodeName = datetime.ToString("yyyy-MM");
             DataTable dt = SQLiteHelper.ExecuteDataTable("select * from Tree where Name='" + NodeName + "'");
 
             if (dt.Rows.Count == 1)
@@ -59,7 +58,7 @@ namespace MyLife.BLL
                 yearMonth = treeDal.ToModel(dt.Rows[0]);
                 day.PID = yearMonth.ID;
                 day.DiaID = id;
-                day.Name = DateTime.Now.Day + "日 " + new CommonHelper().Week();
+                day.Name = datetime.Day + "日 " + new CommonHelper().Week(datetime);
                 treeDal.Insert(day);
 
             }
@@ -72,7 +71,7 @@ namespace MyLife.BLL
                 yearMonth.PID = 0;
                 yearMonth.Name = NodeName;
                 treeDal.Insert(yearMonth);
-                isok = Save(id);
+                isok = Save(id, datetime);
 
             }
             return isok;

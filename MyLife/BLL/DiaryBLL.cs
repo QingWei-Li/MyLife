@@ -3,8 +3,6 @@ using MyLife.Helper;
 using MyLife.Model;
 using System;
 using System.Data;
-using System.IO;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 
@@ -41,7 +39,6 @@ namespace MyLife.BLL
             diaNew.Title = title;
             diaNew.PubTime = pubTime;
             diaNew.Contents = contents;
-            diaNew.IsUpload = 0;
             if (title.Length > 30)
             {
                 diaNew.Title = diaryTime + " " + DateTime.Now.DayOfWeek;
@@ -52,19 +49,18 @@ namespace MyLife.BLL
             {
                 diaNew.ID = diaOld.ID;
                 diaNew.PubTime = diaOld.PubTime;
-                diaNew.IsUpload = diaOld.IsUpload;
                 return diaryDal.Update(diaNew);
             }
 
             int lastID = diaryDal.Insert(diaNew);
-            isok = treeBll.Save(lastID);
+            isok = treeBll.Save(lastID, Convert.ToDateTime(diaryTime));
             return isok;
         }
 
         //获得当天的日记
         internal DiaryModel getTodayDiary(DateTime diaryTime)
         {
-            int pubTime = TimesTampHelper.ConvertDateTimeInt(diaryTime);
+            int pubTime = TimesTampHelper.ConvertDateTimeInt(diaryTime.Date);
             DataTable dt = SQLiteHelper.ExecuteDataTable("select * from Diaries where PubTime=" + pubTime);
 
             if (dt.Rows.Count == 1)
@@ -83,7 +79,8 @@ namespace MyLife.BLL
 
         internal void TodayContent(RichTextBox rtb, string DiaryTime)
         {
-            DiaryModel diaOld = getTodayDiary(Convert.ToDateTime(DiaryTime));
+            DateTime datetime = Convert.ToDateTime(DiaryTime);
+            DiaryModel diaOld = getTodayDiary(datetime);
 
             if (diaOld != null)
             {
@@ -92,7 +89,7 @@ namespace MyLife.BLL
             else
             {
                 //设置日记标题
-                rtb.AppendText(DateTime.Now.ToString("yyyy-MM-dd") + " " + DateTime.Now.DayOfWeek);
+                rtb.AppendText(datetime.ToString("yyyy-MM-dd") + " " + datetime.DayOfWeek);
                 rtb.Document.Blocks.Add(new Paragraph());
             }
             //设置默认焦点位置

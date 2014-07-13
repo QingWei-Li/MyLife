@@ -27,11 +27,11 @@
                     <PasswordBox Grid.Row="1" Grid.Column="1" Name="tbNewPwd"></PasswordBox>
                     <PasswordBox Grid.Row="2" Grid.Column="1" Name="tbNewPwd2"></PasswordBox>
 
-                    <Button Grid.Row="4" Grid.Column="1" Name="bthPwdSet" Content="确定" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True"></Button>
+                    <Button Grid.Row="4" Grid.Column="1" Name="bthPwdSet" Content="确定" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True" Click="btnPwdSet_Click"></Button>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="邮箱信息">
+            <TabItem Header="邮箱配置">
                 <Grid Style="{DynamicResource gridStyle}" Margin="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60"></ColumnDefinition>
@@ -48,21 +48,21 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0">邮箱</TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="0">密码</TextBlock>
-                    <TextBlock Grid.Row="2" Grid.Column="0">服务商</TextBlock>
-                    <TextBlock Grid.Row="3" Grid.Column="0">POP</TextBlock>
-                    <TextBlock Grid.Row="4" Grid.Column="0">端口</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0">POP</TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="0">端口</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="0">关键字</TextBlock>
 
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="tbMail"></TextBox>
+                    <TextBox Grid.Row="0" Grid.Column="1" Name="tbMail" LostFocus="tbMail_LostFocus"></TextBox>
                     <PasswordBox Grid.Row="1" Grid.Column="1" Name="tbMailPwd"></PasswordBox>
-                    <ComboBox Grid.Row="2" Grid.Column="1" Name="tbFacilitator"></ComboBox>
-                    <TextBox Grid.Row="3" Grid.Column="1" Name="tbPOP"></TextBox>
-                    <TextBox Grid.Row="4" Grid.Column="1" Name="tbPort"></TextBox>
+                    <TextBox Grid.Row="2" Grid.Column="1" Name="tbPOP"></TextBox>
+                    <TextBox Grid.Row="3" Grid.Column="1" Name="tbPort"></TextBox>
+                    <TextBox Grid.Row="4" Grid.Column="1" Name="tbKeyword"></TextBox>
 
-                    <Button Grid.Row="5" Grid.Column="1" Name="bthMailSet" Content="确定" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True" Click="bthMailSet_Click"></Button>
+                    <Button Grid.Row="5" Grid.Column="1" Name="bthMailSet" Content="保存" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True" Click="btnMailSave_Click"></Button>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="订阅设置">
+            <TabItem Header="导入数据">
                 <Grid Style="{DynamicResource gridStyle}" Margin="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60"></ColumnDefinition>
@@ -77,15 +77,11 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0">关键字</TextBlock>
-
-                    <TextBox Grid.Row="0" Grid.Column="1" Name="tbKeyword"></TextBox>
-
-                    <Button Grid.Row="2" Grid.Column="1" Name="btnMailKeyword" Content="确定" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True" Click="btnMailKeyword_Click"></Button>
+                    <TextBlock Grid.Row="0" Grid.Column="1">暂未开发</TextBlock>
 
                 </Grid>
             </TabItem>
-            <TabItem Header="导入数据">
+            <TabItem Header="使用说明">
                 <Grid Style="{DynamicResource gridStyle}" Margin="20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="60"></ColumnDefinition>

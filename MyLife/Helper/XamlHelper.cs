@@ -22,5 +22,6 @@ namespace MyLife.Helper
             TextRange tr = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
             tr.Load(s, DataFormats.XamlPackage);
         }
+
     }
 }

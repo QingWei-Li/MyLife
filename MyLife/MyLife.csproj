@@ -85,14 +85,24 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BLL\DiaryBLL.cs" />
+    <Compile Include="BLL\SettingBLL.cs" />
     <Compile Include="BLL\TreeBLL.cs" />
     <Compile Include="DAL\DiaryDAL.cs" />
+    <Compile Include="DAL\SettingDAL.cs" />
     <Compile Include="DAL\TreeDAL.cs" />
     <Compile Include="Helper\CommonHelper.cs" />
     <Compile Include="Helper\ImageHelper.cs" />
     <Compile Include="Helper\MailHelper.cs" />
+    <Compile Include="Helper\XAMLConverter\HtmlCssParser.cs" />
+    <Compile Include="Helper\XAMLConverter\HtmlFromXamlConverter.cs" />
+    <Compile Include="Helper\XAMLConverter\HtmlLexicalAnalyzer.cs" />
+    <Compile Include="Helper\XAMLConverter\HtmlParser.cs" />
+    <Compile Include="Helper\XAMLConverter\HtmlSchema.cs" />
+    <Compile Include="Helper\XAMLConverter\HtmlTokenType.cs" />
+    <Compile Include="Helper\XAMLConverter\HtmlToXamlConverter.cs" />
     <Compile Include="Helper\XamlHelper.cs" />
     <Compile Include="Helper\SQLiteHelper.cs" />
+    <Compile Include="Model\SettingModel.cs" />
     <Compile Include="UI\SettingWindow.xaml.cs">
       <DependentUpon>SettingWindow.xaml</DependentUpon>
     </Compile>
@@ -116,7 +126,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Helper\StringCompress.cs" />
     <Compile Include="Helper\TimesTampHelper.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

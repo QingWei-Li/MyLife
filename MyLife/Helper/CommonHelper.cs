@@ -1,24 +1,92 @@
 ﻿using MyLife.Properties;
 using MyLife.UI;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 
 namespace MyLife.Helper
 {
     class CommonHelper
     {
-        public string Week()
+        public string Week(DateTime dt)
         {
             string[] weekdays = { "周日", "周一", "周二", "周三", "周四", "周五", "周六" };
-            string week = weekdays[Convert.ToInt32(DateTime.Now.DayOfWeek)];
+            string week = weekdays[Convert.ToInt32(dt.DayOfWeek)];
             return week;
+        }
+
+        public string[] GetPOP(string mail)
+        {
+            if (mail.IndexOf('@') < 0) return null;
+
+            string[] mailfix = mail.Split('@');
+            string mailsuffix = mailfix[1].ToLower();
+
+            string[] pop = new string[2];
+
+            switch (mailsuffix)
+            {
+                case "gmail.com":
+                    pop[0] = "pop.gmail.com";
+                    pop[1] = "995";
+                    break;
+                case "qq.com":
+                    pop[0] = "pop.qq.com";
+                    pop[1] = "995";
+                    break;
+                case "126.com":
+                    pop[0] = "pop.126.com";
+                    pop[1] = "110";
+                    break;
+                case "hotmail.com":
+                    pop[0] = "pop.live.com";
+                    pop[1] = "995";
+                    break;
+                case "sina.com":
+                    pop[0] = "pop3.sina.com.cn";
+                    pop[1] = "110";
+                    break;
+                case "tom.com":
+                    pop[0] = "pop.tom.com";
+                    pop[1] = "110";
+                    break;
+                case "163.com":
+                    pop[0] = "pop.163.com";
+                    pop[1] = "110";
+                    break;
+                case "263.net":
+                    pop[0] = "pop3.263.net";
+                    pop[1] = "110";
+                    break;
+                case "yahoo.com":
+                    pop[0] = "pop.mail.yahoo.com";
+                    pop[1] = "110";
+                    break;
+                case "yahoo.com.cn":
+                    pop[0] = "pop.mail.yahoo.com.cn";
+                    pop[1] = "995";
+                    break;
+                case "21cn.com":
+                    pop[0] = "pop.21cn.com";
+                    pop[1] = "110";
+                    break;
+                case "sohu.com":
+                    pop[0] = "pop3.sohu.com";
+                    pop[1] = "110";
+                    break;
+                case "foxmail.com":
+                    pop[0] = "pop.foxmail.com";
+                    pop[1] = "110";
+                    break;
+                case "139.com":
+                    pop[0] = "pop.139.com";
+                    pop[1] = "110";
+                    break;
+                default:
+                    pop = null;
+                    break;
+            }
+            return pop;
         }
 
         /// <summary>
@@ -38,6 +106,7 @@ namespace MyLife.Helper
             if (!File.Exists(dbpath)) return false;
             SQLiteHelper.ConStr.DataSource = dbpath;
             SQLiteHelper.ConStr.Password = password;
+
             return true;
         }
 

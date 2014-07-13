@@ -115,7 +115,7 @@ namespace MyLife.DAL
         public IEnumerable<TreeModel> ListAll()
         {
             List<TreeModel> list = new List<TreeModel>();
-            DataTable dt = SQLiteHelper.ExecuteDataTable("SELECT ID,PID,DiaID,Name FROM Tree");
+            DataTable dt = SQLiteHelper.ExecuteDataTable("SELECT ID,PID,DiaID,Name FROM Tree order by Name");
             foreach (DataRow row in dt.Rows)
             {
                 list.Add(ToModel(row));

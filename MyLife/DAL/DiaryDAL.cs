@@ -14,7 +14,6 @@ namespace MyLife.DAL
             DiaryModel model = new DiaryModel();
             model.ID = Convert.ToInt32(row["ID"]);
             model.PubTime = Convert.ToInt32(row["PubTime"]);
-            model.IsUpload = Convert.ToInt32(row["IsUpload"]);
             model.Title = Convert.ToString(row["Title"]);
             model.Contents = Convert.ToString(row["Contents"]);
             return model;
@@ -29,16 +28,14 @@ namespace MyLife.DAL
         {
             SQLiteParameter[] parameters ={ 
                                               new SQLiteParameter("@PubTime")
-                                              , new SQLiteParameter("@IsUpload")
                                               , new SQLiteParameter("@Title")
                                               , new SQLiteParameter("@Contents")
                                           };
             parameters[0].Value = model.PubTime;
-            parameters[1].Value = model.IsUpload;
-            parameters[2].Value = model.Title;
-            parameters[3].Value = model.Contents;
+            parameters[1].Value = model.Title;
+            parameters[2].Value = model.Contents;
 
-            object count = SQLiteHelper.ExecuteScalar(@"INSERT INTO Diaries(PubTime, IsUpload, Title, Contents) VALUES(@PubTime, @IsUpload, @Title, @Contents)", parameters);
+            object count = SQLiteHelper.ExecuteScalar(@"INSERT INTO Diaries(PubTime, Title, Contents) VALUES(@PubTime, @Title, @Contents)", parameters);
             if (count != null)
             {
                 return Convert.ToInt32(count);
@@ -72,17 +69,15 @@ namespace MyLife.DAL
             SQLiteParameter[] parameters ={
                                               new SQLiteParameter("@ID")
                                               , new SQLiteParameter("@PubTime")
-                                              , new SQLiteParameter("@IsUpload")
                                               , new SQLiteParameter("@Title")
                                               , new SQLiteParameter("@Contents")
                                           };
             parameters[0].Value = model.ID;
             parameters[1].Value = model.PubTime;
-            parameters[2].Value = model.IsUpload;
-            parameters[3].Value = model.Title;
-            parameters[4].Value = model.Contents;
+            parameters[2].Value = model.Title;
+            parameters[3].Value = model.Contents;
 
-            int count = SQLiteHelper.ExecuteNonQuery("UPDATE Diaries SET PubTime=@PubTime, IsUpload=@IsUpload, Title=@Title, Contents=@Contents WHERE ID=@ID", parameters);
+            int count = SQLiteHelper.ExecuteNonQuery("UPDATE Diaries SET PubTime=@PubTime, Title=@Title, Contents=@Contents WHERE ID=@ID", parameters);
             return count > 0;
         }
 
@@ -98,7 +93,7 @@ namespace MyLife.DAL
                                           };
             parameters[0].Value = ID;
 
-            DataTable dt = SQLiteHelper.ExecuteDataTable("SELECT ID, PubTime, IsUpload, Title, Contents FROM Diaries WHERE ID=@ID", parameters);
+            DataTable dt = SQLiteHelper.ExecuteDataTable("SELECT ID, PubTime, Title, Contents FROM Diaries WHERE ID=@ID", parameters);
             if (dt.Rows.Count > 1)
             {
                 throw new Exception("more than 1 row was found");
@@ -119,7 +114,7 @@ namespace MyLife.DAL
         public IEnumerable<DiaryModel> ListAll()
         {
             List<DiaryModel> list = new List<DiaryModel>();
-            DataTable dt = SQLiteHelper.ExecuteDataTable("SELECT ID, PubTime, IsUpload, Title, Contents FROM Diaries");
+            DataTable dt = SQLiteHelper.ExecuteDataTable("SELECT ID, PubTime, Title, Contents FROM Diaries");
             foreach (DataRow row in dt.Rows)
             {
                 list.Add(ToModel(row));
