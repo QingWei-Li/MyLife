@@ -98,6 +98,13 @@ namespace HTMLConverter
             StringBuilder inlineStyle = new StringBuilder();
 
             htmlWriter.WriteStartElement("HTML");
+
+            htmlWriter.WriteStartElement("HEAD");
+            htmlWriter.WriteStartElement("meta");
+            htmlWriter.WriteAttributeString("charset", "UTF-8");
+            htmlWriter.WriteEndElement();
+            htmlWriter.WriteEndElement();
+
             htmlWriter.WriteStartElement("BODY");
 
             WriteFormattingProperties(xamlReader, htmlWriter, inlineStyle);

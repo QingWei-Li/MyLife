@@ -10,12 +10,13 @@ namespace MyLife.BLL
 {
     class DiaryBLL
     {
-        internal bool Save(RichTextBox rtb, string diaryTime)
+        internal bool Save(FlowDocument fd, string diaryTime)
         {
             bool isok = false;
 
-            TextRange textRange = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            DiaryModel diaOld = getTodayDiary(Convert.ToDateTime(diaryTime));
+            DateTime datetime = Convert.ToDateTime(diaryTime);
+            TextRange textRange = new TextRange(fd.ContentStart, fd.ContentEnd);
+            DiaryModel diaOld = getTodayDiary(datetime);
             DiaryDAL diaryDal = new DiaryDAL();
             TreeBLL treeBll = new TreeBLL();
 
@@ -32,17 +33,13 @@ namespace MyLife.BLL
 
             //保存日记内容
             DiaryModel diaNew = new DiaryModel();
-            string contents = XamlHelper.ToXaml(rtb);
-            int pubTime = TimesTampHelper.ConvertDateTimeInt(Convert.ToDateTime(diaryTime));
-            string title = textRange.Text.Substring(0, textRange.Text.IndexOf("\r\n"));
+            string contents = XamlHelper.ToXaml(fd);
+            int pubTime = TimesTampHelper.ConvertDateTimeInt(datetime);
+            string title = datetime.ToString("yyyy-MM-dd") + " " + datetime.DayOfWeek;
 
             diaNew.Title = title;
             diaNew.PubTime = pubTime;
             diaNew.Contents = contents;
-            if (title.Length > 30)
-            {
-                diaNew.Title = diaryTime + " " + DateTime.Now.DayOfWeek;
-            }
 
             //查找是否有当天内容
             if (diaOld != null)
@@ -53,7 +50,7 @@ namespace MyLife.BLL
             }
 
             int lastID = diaryDal.Insert(diaNew);
-            isok = treeBll.Save(lastID, Convert.ToDateTime(diaryTime));
+            isok = treeBll.Save(lastID, datetime);
             return isok;
         }
 
@@ -77,23 +74,26 @@ namespace MyLife.BLL
             }
         }
 
-        internal void TodayContent(RichTextBox rtb, string DiaryTime)
+        internal FlowDocument GetDoc(string DiaryTime)
         {
+            FlowDocument fd = new FlowDocument();
             DateTime datetime = Convert.ToDateTime(DiaryTime);
             DiaryModel diaOld = getTodayDiary(datetime);
 
             if (diaOld != null)
             {
-                XamlHelper.FromXaml(rtb, diaOld.Contents);
+                fd = XamlHelper.FromXaml(diaOld.Contents);
             }
             else
             {
                 //设置日记标题
-                rtb.AppendText(datetime.ToString("yyyy-MM-dd") + " " + datetime.DayOfWeek);
-                rtb.Document.Blocks.Add(new Paragraph());
+                Paragraph p = new Paragraph();
+                Run run = new Run() { Text = datetime.ToString("yyyy-MM-dd") + " " + datetime.DayOfWeek };
+                p.Inlines.Add(run);
+                fd.Blocks.Add(p);
+                fd.Blocks.Add(new Paragraph());
             }
-            //设置默认焦点位置
-            rtb.CaretPosition = rtb.CaretPosition.DocumentEnd;
+            return fd;
         }
 
         internal DateTime SelectTimeById(int? id)

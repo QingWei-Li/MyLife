@@ -50,14 +50,14 @@
                     <TextBlock Grid.Row="1" Grid.Column="0">密码</TextBlock>
                     <TextBlock Grid.Row="2" Grid.Column="0">POP</TextBlock>
                     <TextBlock Grid.Row="3" Grid.Column="0">端口</TextBlock>
-                    <TextBlock Grid.Row="4" Grid.Column="0">关键字</TextBlock>
+                    <TextBlock Grid.Row="4" Grid.Column="0" ToolTip="邮件标题以关键字开头就认为是日记邮件">关键字</TextBlock>
 
                     <TextBox Grid.Row="0" Grid.Column="1" Name="tbMail" LostFocus="tbMail_LostFocus"></TextBox>
                     <PasswordBox Grid.Row="1" Grid.Column="1" Name="tbMailPwd"></PasswordBox>
                     <TextBox Grid.Row="2" Grid.Column="1" Name="tbPOP"></TextBox>
                     <TextBox Grid.Row="3" Grid.Column="1" Name="tbPort"></TextBox>
-                    <TextBox Grid.Row="4" Grid.Column="1" Name="tbKeyword"></TextBox>
-
+                    <TextBox Grid.Row="4" Grid.Column="1" Name="tbKeyword" ToolTip="例如填'123'则当发送的邮件标题开头为123则会被程序当成日记邮件保存到本地"></TextBox>
+                    <TextBlock Text="注：邮件标题以关键字开头就认为是日记邮件" Grid.Row="5" Grid.ColumnSpan="2" Width="200" HorizontalAlignment="Left" TextWrapping="Wrap"></TextBlock>
                     <Button Grid.Row="5" Grid.Column="1" Name="bthMailSet" Content="保存" Height="30" Width="100" HorizontalAlignment="Right" IsDefault="True" Click="btnMailSave_Click"></Button>
 
                 </Grid>
@@ -96,8 +96,15 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="1">暂未开发</TextBlock>
-
+                    <TextBlock Grid.Row="0" Grid.Column="0">使用帮助</TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="0">意见反馈</TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="0">我的微博</TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="0">github</TextBlock>
+                    
+                    <TextBlock Grid.Row="0" Grid.Column="1"><Hyperlink Name="linkHelper" Click="linkFeedback_Click">点击进入</Hyperlink></TextBlock>
+                    <TextBlock Grid.Row="1" Grid.Column="1"><Hyperlink Name="linkFeedback" Click="linkFeedback_Click">leecinwell@qq.com</Hyperlink></TextBlock>
+                    <TextBlock Grid.Row="2" Grid.Column="1"><Hyperlink Name="linkWeibo" Click="linkWeibo_Click">@清伟coder</Hyperlink></TextBlock>
+                    <TextBlock Grid.Row="3" Grid.Column="1"><Hyperlink Name="linkGithub" Click="linkGithub_Click">github.com/QingWei-Li/MyLife</Hyperlink></TextBlock>
                 </Grid>
             </TabItem>
 

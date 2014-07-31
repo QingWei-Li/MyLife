@@ -1,0 +1,46 @@
+﻿<Window x:Class="MyLife.UI.ExportWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+          Title="导出日记" Height="350" Width="400" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" MinHeight="350" MaxHeight="350" MaxWidth="400" MinWidth="400">
+    <Grid Style="{DynamicResource gridStyle}">
+        <TabControl Background="{x:Null}">
+            <TabItem Header="今日日记">
+                <Grid Style="{DynamicResource gridStyle}" Margin="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="2" Name="btnTodayHtml" Content="HTML格式" Height="30" Width="130" Click="btnTodayHtml_Click"></Button>
+                    <Button Grid.Row="3" Name="bthTodayRtf" Content="RTF格式" Height="30" Width="130" Click="bthTodayRtf_Click"></Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="全部日记">
+                <Grid Style="{DynamicResource gridStyle}" Margin="20">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <ProgressBar  Grid.Row="1"  Width="200" Height="30" Background="{x:Null}" Name="pgbHtmlAll"></ProgressBar>
+                    <ProgressBar  Grid.Row="2"  Width="200" Height="30" Background="{x:Null}" Name="pgbRtfAll"></ProgressBar>
+                    <ProgressBar  Grid.Row="3"  Width="200" Height="30" Background="{x:Null}" Name="pgbHtmlAlone"></ProgressBar>
+                    <ProgressBar  Grid.Row="4"  Width="200" Height="30" Background="{x:Null}" Name="pgbRtfAlone"></ProgressBar>
+                    <Button Grid.Row="1" Name="btnHtmlAll"  Height="30" Width="200" Click="btnHtmlAll_Click" Background="{x:Null}" Content="导出成一个HTML文件"></Button>
+                    <Button Grid.Row="2" Name="bthRtfAll" Height="30" Width="200"  Click="bthRtfAll_Click" Background="{x:Null}" Content="导出成一个RTF文件"></Button>
+                    <Button Grid.Row="3" Name="btnHtmlAlone" Height="30" Width="200" Click="btnHtmlAlone_Click" Background="{x:Null}" Content="导出成独立的HTML文件"></Button>
+                    <Button Grid.Row="4" Name="bthRtfAlone" Height="30" Width="200" Click="bthRtfAlone_Click" Background="{x:Null}" Content="导出成独立的RTF文件"></Button>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

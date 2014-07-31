@@ -43,7 +43,7 @@ namespace MyLife.BLL
             return null;
         }
 
-        internal bool Save(int id,DateTime datetime)
+        internal bool Save(int id, DateTime datetime)
         {
             bool isok = false;
             //保存树节点
@@ -81,13 +81,10 @@ namespace MyLife.BLL
         {
             TreeDAL treeDal = new TreeDAL();
             DataTable dt = SQLiteHelper.ExecuteDataTable("select * from Tree where PID =(select PID from Tree where DiaID=" + id + ")");
-
             if (dt.Rows.Count <= 1)
-            {
                 SQLiteHelper.ExecuteNonQuery("delete from Tree where  ID =(select PID from Tree where DiaID=" + id + ") ");
-                SQLiteHelper.ExecuteNonQuery("delete from Tree where DiaID=" + id);
-            }
-
+            SQLiteHelper.ExecuteNonQuery("delete from Tree where DiaID=" + id);
+           
             return true;
         }
     }

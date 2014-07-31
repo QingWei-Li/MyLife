@@ -16,10 +16,9 @@ namespace MyLife.Helper
     {
         private static readonly Pop3Client pop3Client = new Pop3Client();
 
-        public static void ReceiveMails(System.Windows.Controls.RichTextBox rtb)
+        public static void ReceiveMails(System.ComponentModel.BackgroundWorker backgroundWorker)
         {
             string pop, port, mailname, mailpassword, keyword;
-
             try
             {
                 BLL.SettingBLL bll = new BLL.SettingBLL();
@@ -29,22 +28,16 @@ namespace MyLife.Helper
                 mailname = dic["Mail"];
                 mailpassword = dic["MailPwd"];
                 keyword = dic["Keyword"];
-            }
-            catch
-            {
-                return;
-            }
 
-            try
-            {
                 if (pop3Client.Connected)
                     pop3Client.Disconnect();
                 pop3Client.Connect(pop, int.Parse(port), true);
                 pop3Client.Authenticate(mailname, mailpassword);
                 int count = pop3Client.GetMessageCount();
 
-                for (int i = count; i >= 1; i -= 1)
+                for (int i = 1; i <= count; i++)
                 {
+                    backgroundWorker.ReportProgress((int)(((double)i / count) * 100));
                     /*
                     * 1.接收邮件，筛选出带有关键字开头的邮件
                     * 2.将邮件格式转成xaml便于读取
@@ -54,22 +47,22 @@ namespace MyLife.Helper
                     Message message = pop3Client.GetMessage(i);
                     if (message.Headers.Subject.StartsWith(keyword))
                     {
-                        GetMail(rtb, i, message);
-                        break;
+                        SaveMail(i, message);
+                        pop3Client.DeleteMessage(i);
+                        continue;
                     }
-
                 }
 
             }
-
-            catch (Exception e)
+            catch
             {
-                MessageBox.Show(e.Message, "连接出错");
+                return;
             }
-
+            //提交删除的更改信息
+            TryMail(pop, port, mailname, mailpassword);
         }
 
-        private static void GetMail(System.Windows.Controls.RichTextBox rtb, int i, Message message)
+        private static void SaveMail(int i, Message message)
         {
             MessagePart plainHtmlPart = message.FindFirstHtmlVersion();
             MessagePart plainTextPart = message.FindFirstPlainTextVersion();
@@ -86,52 +79,24 @@ namespace MyLife.Helper
             }
             else if (plainHtmlPart != null)
             {
-
-                //将html格式转成xaml格式进行存取
                 textMail = plainHtmlPart.GetBodyAsText();
-
             }
 
             string xamlMail = HTMLConverter.HtmlToXamlConverter.ConvertHtmlToXaml(textMail, true);
             StringReader sr = new StringReader(xamlMail);
             XmlReader xr = XmlReader.Create(sr);
-            FlowDocument fd = (FlowDocument)XamlReader.Load(xr);
-            //判断邮件时间
+            FlowDocument fdMail = (FlowDocument)XamlReader.Load(xr);
+            FlowDocument fd = new FlowDocument();
             DateTime dateMail = Convert.ToDateTime(message.Headers.Date);
-            if (dateMail.Date == DateTime.Now.Date)
-            {
-                //当天内容就进行合并和显示操作
-                rtb.Document = MergeFlowDocument(rtb.Document, fd);
-            }
-            else
-            {
-                //之前的内容就进行合并和保存操作
-                BLL.DiaryBLL dbll = new BLL.DiaryBLL();
-                System.Windows.Controls.RichTextBox oldrtb = new System.Windows.Controls.RichTextBox();
-                dbll.TodayContent(oldrtb, dateMail.Date.ToString());
-                oldrtb.Document = MergeFlowDocument(oldrtb.Document, fd);
-                dbll.Save(oldrtb, dateMail.Date.ToString());
-            }
-            
-            //删除邮件
-            pop3Client.DeleteMessage(i);
+            BLL.DiaryBLL dbll = new BLL.DiaryBLL();
+
+            fd = dbll.GetDoc(dateMail.Date.ToString());
+            fd = CommonHelper.MergeFlowDocument(fd, fdMail);
+            dbll.Save(fd, dateMail.Date.ToString());
+
         }
 
-        private static FlowDocument MergeFlowDocument(FlowDocument fd, FlowDocument fdNew)
-        {
-            FlowDocument FlowDocument = new FlowDocument();
-            List<Block> flowDocumetnBlocks1 = new List<Block>(fd.Blocks);
-            List<Block> flowDocumetnBlocks2 = new List<Block>(fdNew.Blocks);
-
-            foreach (Block item in flowDocumetnBlocks1)
-                FlowDocument.Blocks.Add(item);
-            foreach (Block item in flowDocumetnBlocks2)
-                FlowDocument.Blocks.Add(item);
-
-            return FlowDocument;
-        }
-
-        public bool TryMail(string pop, string port, string mailname, string mailpassword)
+        public static bool TryMail(string pop, string port, string mailname, string mailpassword)
         {
             try
             {
@@ -173,6 +138,5 @@ namespace MyLife.Helper
             }
 
         }
-
     }
 }

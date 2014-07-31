@@ -1,8 +1,10 @@
 ﻿using MyLife.Properties;
 using MyLife.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Controls;
+using System.Windows.Documents;
 
 namespace MyLife.Helper
 {
@@ -121,8 +123,22 @@ namespace MyLife.Helper
                 var lastModel = treeView.Items[treeView.Items.Count - 1];
                 TreeViewItem currentContainer = treeView.ItemContainerGenerator.ContainerFromItem(lastModel) as TreeViewItem;
                 currentContainer.IsExpanded = true;
+                //currentContainer.Background = System.Windows.Media.Brushes.IndianRed;
             }
         }
 
+        public static FlowDocument MergeFlowDocument(FlowDocument fd, FlowDocument fdNew)
+        {
+            FlowDocument FlowDocument = new FlowDocument();
+            List<Block> flowDocumetnBlocks1 = new List<Block>(fd.Blocks);
+            List<Block> flowDocumetnBlocks2 = new List<Block>(fdNew.Blocks);
+
+            foreach (Block item in flowDocumetnBlocks1)
+                FlowDocument.Blocks.Add(item);
+            foreach (Block item in flowDocumetnBlocks2)
+                FlowDocument.Blocks.Add(item);
+
+            return FlowDocument;
+        }
     }
 }

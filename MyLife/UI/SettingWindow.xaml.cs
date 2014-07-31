@@ -28,12 +28,21 @@ namespace MyLife.UI
 
         private void btnMailSave_Click(object sender, RoutedEventArgs e)
         {
-            MailHelper mailHelper = new MailHelper();
-            bool isok = mailHelper.TryMail(tbPOP.Text, tbPort.Text, tbMail.Text, tbMailPwd.Password);
+            BLL.SettingBLL bll = new BLL.SettingBLL();
+
+            //如果文本框清空则表示清空内容保存
+            if (tbMailPwd.Password.Length <= 0 && tbMail.Text.Length <= 0)
+            {
+                bll.SaveMailSet(tbPOP.Text, tbPort.Text, tbMail.Text, tbMailPwd.Password, tbKeyword.Text);
+                this.Close();
+                return;
+            }
+
+            bool isok = MailHelper.TryMail(tbPOP.Text, tbPort.Text, tbMail.Text, tbMailPwd.Password);
             if (isok)
             {
-                BLL.SettingBLL bll = new BLL.SettingBLL();
                 bll.SaveMailSet(tbPOP.Text, tbPort.Text, tbMail.Text, tbMailPwd.Password, tbKeyword.Text);
+                MessageBox.Show("以后每次启动都会自动读取日记邮件并保存在本地，如果当天有日记邮件请等待同步完成再输入新内容。", "保存成功，重启后生效");
                 this.Close();
             }
         }
@@ -82,6 +91,21 @@ namespace MyLife.UI
                 tbPOP.Text = string.Empty;
                 tbPort.Text = string.Empty;
             }
+        }
+
+        private void linkWeibo_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://weibo.com/ihermit");
+        }
+
+        private void linkFeedback_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("mailto:leecinwell@qq.com");
+        }
+
+        private void linkGithub_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/QingWei-Li/MyLife");
         }
 
     }

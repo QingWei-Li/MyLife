@@ -1,10 +1,9 @@
-﻿using MyLife.BLL;
-using MyLife.Helper;
-using MyLife.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -20,6 +19,7 @@ namespace MyLife
     public partial class MainWindow : Window
     {
         private string DiaryTime = DateTime.Now.ToString("yyyy-MM-dd");
+        private BackgroundWorker backgroundWorker = new BackgroundWorker();
         private static int countAll = 0;
 
         public MainWindow()
@@ -35,7 +35,7 @@ namespace MyLife
         private void EditWindow_Loaded(object sender, RoutedEventArgs e)
         {
             //连接数据库
-            if (CommonHelper.InitSql())
+            if (Helper.CommonHelper.InitSql())
             {
                 rtbEdit.AppendText("输入密码，按回车键进入\r\n密码：");
                 pswLogin.Focus();
@@ -58,12 +58,11 @@ namespace MyLife
         }//焦点始终在编辑区内，除非用户点了搜索
         private void EditWindow_Closed(object sender, EventArgs e)
         {
-            if (SQLiteHelper.ConStr.Password.Length > 0)
+            if (Helper.SQLiteHelper.ConStr.Password.Length > 0)
             {
                 SaveEdit();
             }
         }
-
         private void PasswordFocus(object sender, MouseButtonEventArgs e)
         {
             if (!tbSearch.IsKeyboardFocusWithin)
@@ -80,15 +79,21 @@ namespace MyLife
         {
             if (e.Key == Key.Enter)
             {
-                SQLiteHelper.ConStr.Password = pswLogin.Password;
+                Helper.SQLiteHelper.ConStr.Password = pswLogin.Password;
+                backgroundWorker.DoWork += backgroundWorker_DoWork;
+                backgroundWorker.RunWorkerCompleted += backgroundWorker_RunWorkerCompleted;
+                backgroundWorker.ProgressChanged += backgroundWorker_ProgressChanged;
+                backgroundWorker.WorkerReportsProgress = true;
+                pbMail.Visibility = Visibility.Visible;
                 e.Handled = true;
                 try
                 {
+                    BindTree();
                     rtbEdit.Document.Blocks.Clear();
                     gridEdit.Children.Remove(pswLogin);
                     InitData();
-                    new DiaryBLL().Save(this.rtbEdit, DiaryTime);
-                    BindTree();
+                    backgroundWorker.RunWorkerAsync();
+                    SaveEdit();
                     this.rtbEdit.Focus();
 
                     EditWindow.MouseDown -= PasswordFocus;
@@ -123,7 +128,7 @@ namespace MyLife
                         pE.Save(stream);
                     }
 
-                    ImageHelper.InsertImg(rtbEdit, tempFile);
+                    Helper.ImageHelper.InsertImg(rtbEdit, tempFile);
                     File.Delete(tempFile);
                 }
             }
@@ -136,7 +141,7 @@ namespace MyLife
                 }
                 if (strText.Length <= 0) return;
                 int titleEnd = strText.IndexOf("\r\n");
-                if (titleEnd > 31) titleEnd = 0;
+                if (titleEnd > 31 || titleEnd < 0) titleEnd = 0;
 
                 strText = strText.Remove(0, titleEnd);
                 int count = Regex.Matches(strText, @"[^\s]").Count;
@@ -165,18 +170,13 @@ namespace MyLife
 
             foreach (string item in arr)
             {
-                ImageHelper.InsertImg(rtbEdit, item);
+                Helper.ImageHelper.InsertImg(rtbEdit, item);
             }
             e.Handled = true;
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-
-            //测试用的，暂时不删
-            TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
-            string xw = System.Windows.Markup.XamlWriter.Save(rtbEdit.Document);
-
             SaveEdit();
         }
         private void btnLight_Click(object sender, RoutedEventArgs e)
@@ -206,8 +206,9 @@ namespace MyLife
         }
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            Helper.MailHelper.ReceiveMails(this.rtbEdit);
-            BindTree();
+            SaveEdit();
+            UI.ExportWindow expwin = new UI.ExportWindow();
+            expwin.ShowDialog();
         }
 
         private void girdSideBar_MouseEnter(object sender, MouseEventArgs e)
@@ -247,15 +248,37 @@ namespace MyLife
         }
         private void tvSideBar_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            object selectItem = tvSideBar.SelectedItem;
-            TreeModel model = (TreeModel)selectItem;
+            Model.TreeModel model = (Model.TreeModel)tvSideBar.SelectedItem;
+            //如何改变树面板的某项背景色
+            //Model.TreeModel model2 = (Model.TreeModel)tvSideBar.Items[0];
+            //object model3 = tvSideBar.ItemContainerGenerator.ContainerFromItem(tvSideBar.SelectedItem);
+            //TreeViewItem currentContainer = tvSideBar.ItemContainerGenerator.ContainerFromItem(tvSideBar.SelectedItem) as TreeViewItem;
+            //currentContainer.Background = System.Windows.Media.Brushes.IndianRed;
+            
             if (model.PID > 0)
             {
-                new DiaryBLL().Save(this.rtbEdit, DiaryTime);
                 rtbEdit.Document.Blocks.Clear();
-                DiaryTime = new DiaryBLL().SelectTimeById(model.DiaID).ToString("yyyy-MM-dd");
+                DiaryTime = new BLL.DiaryBLL().SelectTimeById(model.DiaID).ToString("yyyy-MM-dd");
                 InitData();
+
+                if (tbSearch.Text.Trim() != String.Empty)
+                {
+                    Helper.SearchHelper.ReplaceKeywordColor(rtbEdit, tbSearch.Text.Trim());
+                }
             }
+        }
+        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
+                textRange.ApplyPropertyValue(TextElement.BackgroundProperty, rtbEdit.Background);
+                Helper.SearchHelper.ReplaceKeywordColor(rtbEdit, tbSearch.Text.Trim());
+            }
+        }
+        private void tbSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            tbSearch.Text = String.Empty;
         }
 
         private void InitData()
@@ -263,13 +286,14 @@ namespace MyLife
             //初始化
             this.Title = DiaryTime;
             //加载内容
-            new DiaryBLL().TodayContent(this.rtbEdit, DiaryTime);
+            rtbEdit.Document = new BLL.DiaryBLL().GetDoc(DiaryTime);
+            rtbEdit.CaretPosition = rtbEdit.CaretPosition.DocumentEnd;
             TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
             textRange.ApplyPropertyValue(TextElement.ForegroundProperty, rtbEdit.Foreground);
         }
         private void BindTree()
         {
-            List<TreeModel> treeView = new TreeBLL().CreateTree();
+            List<Model.TreeModel> treeView = new BLL.TreeBLL().CreateTree();
             this.tvSideBar.ItemsSource = treeView;
             Helper.CommonHelper.ExpandLastNode(tvSideBar);
         }
@@ -287,7 +311,9 @@ namespace MyLife
         }
         private void SaveEdit()
         {
-            bool isok = new DiaryBLL().Save(this.rtbEdit, DiaryTime);
+            TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
+            textRange.ApplyPropertyValue(TextElement.BackgroundProperty, rtbEdit.Background);
+            bool isok = new BLL.DiaryBLL().Save(this.rtbEdit.Document, DiaryTime);
             BindTree();
         }
         private static void SideBarAnimation(Panel sideBar, int from, int to, ThicknessAnimation ta)
@@ -300,6 +326,20 @@ namespace MyLife
 
             ta.Duration = TimeSpan.FromSeconds(0.2);
             sideBar.BeginAnimation(TextBlock.MarginProperty, ta);
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            gridMain.Children.Remove(pbMail);
+            InitData();
+        }
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Helper.MailHelper.ReceiveMails(backgroundWorker);
+        }
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            pbMail.Value = e.ProgressPercentage;
         }
 
     }

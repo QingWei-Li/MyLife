@@ -16,6 +16,8 @@
 
     <Style TargetType="{x:Type TextBox}">
         <Setter Property="Height" Value="20"/>
+        <Setter Property="Foreground"  Value="#FF1C1C1C" />
+        <Setter  Property="CaretBrush"  Value="#FF1C1C1C" />
     </Style>
     
     <Style TargetType="{x:Type ComboBox}">
@@ -24,8 +26,8 @@
     
     <Style TargetType="{x:Type PasswordBox}">
         <Setter Property="Height" Value="20"/>
-        <Setter Property="Foreground"  Value="#AAF1F1F1"/>
-        <Setter  Property="CaretBrush"  Value="White" />
+        <Setter Property="Foreground"  Value="#FF1C1C1C"/>
+        <Setter  Property="CaretBrush"  Value="#FF1C1C1C" />
     </Style>
 
     <Style TargetType="{x:Type TabItem}">
@@ -51,7 +53,7 @@
                                 <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter TargetName="bd" Property="Background" Value="Gray" />
+                                <Setter TargetName="bd" Property="Background" Value="#FF373737" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
@@ -69,16 +71,16 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
-                        <Border Name="bg" Background="{TemplateBinding Background}" BorderBrush="Gray" BorderThickness="1">
+                        <Border Name="bg" Background="{TemplateBinding Background}" BorderBrush="#FF373737" BorderThickness="1">
                         <ContentPresenter ContentSource="Content"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="bg"  Property="Background" Value="White" />
+                            <Setter TargetName="bg"  Property="Background" Value="#FF373737" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bg" Property="Background" Value="Gray"/>
+                            <Setter TargetName="bg" Property="Background" Value="#FF373737"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -94,7 +96,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Grid>
-                        <Border Name="bg" Background="{TemplateBinding Background}" BorderBrush="Gray" BorderThickness="0">
+                        <Border Name="bg" Background="{TemplateBinding Background}" BorderBrush="#FF373737" BorderThickness="0">
                             <ContentPresenter ContentSource="Content"  VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </Border>
                     </Grid>
@@ -103,7 +105,7 @@
                             <Setter TargetName="bg"  Property="Background" Value="White" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bg" Property="Background" Value="Gray"/>
+                            <Setter TargetName="bg" Property="Background" Value="#FF373737"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -155,12 +157,18 @@
         <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                <Setter Property="Foreground"  Value="#FFF1F1F1"/>
+                <Setter  Property="CaretBrush"  Value="#FFF1F1F1" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                <Setter Property="Foreground"  Value="#FFF1F1F1"/>
+                <Setter  Property="CaretBrush"  Value="#FFF1F1F1" />
             </Trigger>
             <Trigger Property="IsKeyboardFocused" Value="True">
                 <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                <Setter Property="Foreground"  Value="#FFF1F1F1"/>
+                <Setter  Property="CaretBrush"  Value="#FFF1F1F1" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

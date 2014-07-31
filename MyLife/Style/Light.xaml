@@ -51,7 +51,7 @@
                                 <Condition Property="IsSelected" Value="False"/>
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
-                                <Setter TargetName="bd" Property="Background" Value="Gray" />
+                                <Setter TargetName="bd" Property="Background" Value="#eee" />
                             </MultiTrigger.Setters>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
@@ -60,20 +60,6 @@
         </Setter>
         <Setter Property="Background" Value="#FFF9F9F5"/>
     </Style>
-
-    <!--<Style TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="#FFF9F9F5"/>
-        <Setter Property="Foreground"  Value="#FF2C3E50" />
-        <Setter Property="Height" Value="80"/>
-        <Setter Property="BorderThickness" Value="1"/>
-    </Style>
-
-    <Style TargetType="{x:Type Button}" x:Key="btnSideBar">
-        <Setter Property="Background" Value="#FFF9F9F5"/>
-        <Setter Property="Foreground"  Value="#FF2C3E50" />
-        <Setter Property="Height" Value="80"/>
-        <Setter Property="BorderThickness" Value="0"/>
-    </Style>-->
 
     <Style TargetType="{x:Type Button}">
         <Setter Property="Background" Value="#FFF9F9F5"/>
@@ -153,4 +139,31 @@
         <Setter  Property="Foreground"  Value="#FF2C3E50" />
     </Style>
 
+    <Style TargetType="{x:Type ToolTip}">
+        <Setter Property="Background" Value="#FFF9F9F5"/>
+    </Style>
+
+    <ControlTemplate x:Key="PasswordBoxControlTemplate1" TargetType="{x:Type PasswordBox}">
+        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                <Setter Property="Foreground"  Value="#FF2C3E50"/>
+                <Setter  Property="CaretBrush"  Value="#FF2C3E50" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                <Setter Property="Foreground"  Value="#FF2C3E50"/>
+                <Setter  Property="CaretBrush"  Value="#FF2C3E50" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="BorderBrush" TargetName="border" Value="{x:Null}"/>
+                <Setter Property="Foreground"  Value="#FF2C3E50"/>
+                <Setter  Property="CaretBrush"  Value="#FF2C3E50" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
 </ResourceDictionary>
