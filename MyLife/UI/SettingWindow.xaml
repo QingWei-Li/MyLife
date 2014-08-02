@@ -101,7 +101,7 @@
                     <TextBlock Grid.Row="2" Grid.Column="0">我的微博</TextBlock>
                     <TextBlock Grid.Row="3" Grid.Column="0">github</TextBlock>
                     
-                    <TextBlock Grid.Row="0" Grid.Column="1"><Hyperlink Name="linkHelper" Click="linkFeedback_Click">点击进入</Hyperlink></TextBlock>
+                    <TextBlock Grid.Row="0" Grid.Column="1"><Hyperlink Name="linkHelper" Click="linkHelp_Click">点击进入</Hyperlink></TextBlock>
                     <TextBlock Grid.Row="1" Grid.Column="1"><Hyperlink Name="linkFeedback" Click="linkFeedback_Click">leecinwell@qq.com</Hyperlink></TextBlock>
                     <TextBlock Grid.Row="2" Grid.Column="1"><Hyperlink Name="linkWeibo" Click="linkWeibo_Click">@清伟coder</Hyperlink></TextBlock>
                     <TextBlock Grid.Row="3" Grid.Column="1"><Hyperlink Name="linkGithub" Click="linkGithub_Click">github.com/QingWei-Li/MyLife</Hyperlink></TextBlock>

@@ -12,7 +12,7 @@ namespace MyLife.Helper
         {
             MemoryStream s = new MemoryStream();
             TextRange tr = new TextRange(fd.ContentStart, fd.ContentEnd);
-            tr.Save(s, DataFormats.Xaml);
+            tr.Save(s, DataFormats.XamlPackage);
             return Convert.ToBase64String(s.ToArray());
         }
 
@@ -21,7 +21,7 @@ namespace MyLife.Helper
             FlowDocument fd = new FlowDocument();
             MemoryStream s = new MemoryStream(Convert.FromBase64String(buffer));
             TextRange tr = new TextRange(fd.ContentStart, fd.ContentEnd);
-            tr.Load(s, DataFormats.Xaml);
+            tr.Load(s, DataFormats.XamlPackage);
             return fd;
         }
 

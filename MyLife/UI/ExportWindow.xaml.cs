@@ -136,20 +136,20 @@ namespace MyLife.UI
         private void btnRtfAll_Dowork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker bgw = (BackgroundWorker)sender;
-            DAL.DiaryDAL ddal = new DAL.DiaryDAL();
-            List<Model.DiaryModel> dialist = ddal.ListAll().ToList();
+            DAL.DiaryDAL dal = new DAL.DiaryDAL();
+            List<Model.DiaryModel> listModel = dal.ListAll().ToList();
             FlowDocument fdAll = new FlowDocument();
             count = 0;
             filepath = filepath + System.IO.Path.DirectorySeparatorChar + "mylife.rtf";
 
             using (FileStream stream = File.OpenWrite(filepath))
             {
-                foreach (Model.DiaryModel model in dialist)
+                foreach (Model.DiaryModel model in listModel)
                 {
                     FlowDocument fd = Helper.XamlHelper.FromXaml(model.Contents);
                     fdAll = Helper.CommonHelper.MergeFlowDocument(fd, fdAll);
                     count++;
-                    bgw.ReportProgress((int)((float)count / (float)dialist.Count * 100));
+                    bgw.ReportProgress((int)((float)count / (float)listModel.Count * 100));
                 }
 
                 TextRange tr = new TextRange(fdAll.ContentStart, fdAll.ContentEnd);
@@ -165,19 +165,19 @@ namespace MyLife.UI
         private void btnHtmlAll_Dowork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker bgw = (BackgroundWorker)sender;
-            DAL.DiaryDAL ddal = new DAL.DiaryDAL();
-            List<Model.DiaryModel> dialist = ddal.ListAll().ToList();
+            DAL.DiaryDAL dal = new DAL.DiaryDAL();
+            List<Model.DiaryModel> listModel = dal.ListAll().ToList();
             string strHtml = "";
             count = 0;
             filepath = filepath + System.IO.Path.DirectorySeparatorChar + "mylife.html";
 
-            foreach (Model.DiaryModel model in dialist)
+            foreach (Model.DiaryModel model in listModel)
             {
                 FlowDocument fd = Helper.XamlHelper.FromXaml(model.Contents);
                 string strDoc = System.Windows.Markup.XamlWriter.Save(fd);
                 strHtml += HTMLConverter.HtmlFromXamlConverter.ConvertXamlToHtml(strDoc);
                 count++;
-                bgw.ReportProgress((int)((float)count / (float)dialist.Count * 100));
+                bgw.ReportProgress((int)((float)count / (float)listModel.Count * 100));
             }
 
             strHtml = strHtml.Replace("#F1F1F1;", "#2C3E50");
@@ -195,15 +195,15 @@ namespace MyLife.UI
                 Directory.CreateDirectory(filepath);
 
             BackgroundWorker bgw = (BackgroundWorker)sender;
-            DAL.DiaryDAL ddal = new DAL.DiaryDAL();
-            List<Model.DiaryModel> dialist = ddal.ListAll().ToList();
+            DAL.DiaryDAL dal = new DAL.DiaryDAL();
+            List<Model.DiaryModel> listModel = dal.ListAll().ToList();
             count = 0;
-            foreach (Model.DiaryModel model in dialist)
+            foreach (Model.DiaryModel model in listModel)
             {
                 DateTime filetime = Helper.TimesTampHelper.GetTime(model.PubTime);
                 SaveRtf(filepath, filetime);
                 count++;
-                bgw.ReportProgress((int)((float)count / (float)dialist.Count * 100));
+                bgw.ReportProgress((int)((float)count / (float)listModel.Count * 100));
             }
         }
         private void btnHtmlAlone_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -217,15 +217,15 @@ namespace MyLife.UI
                 Directory.CreateDirectory(filepath);
 
             BackgroundWorker bgw = (BackgroundWorker)sender;
-            DAL.DiaryDAL ddal = new DAL.DiaryDAL();
-            List<Model.DiaryModel> dialist = ddal.ListAll().ToList();
+            DAL.DiaryDAL dal = new DAL.DiaryDAL();
+            List<Model.DiaryModel> listModel = dal.ListAll().ToList();
             count = 0;
-            foreach (Model.DiaryModel model in dialist)
+            foreach (Model.DiaryModel model in listModel)
             {
                 DateTime filetime = Helper.TimesTampHelper.GetTime(model.PubTime);
                 SaveHtml(filepath, filetime);
                 count++;
-                bgw.ReportProgress((int)((float)count / (float)dialist.Count * 100));
+                bgw.ReportProgress((int)((float)count / (float)listModel.Count * 100));
             }
         }
         private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -123,7 +123,6 @@ namespace MyLife.Helper
                 var lastModel = treeView.Items[treeView.Items.Count - 1];
                 TreeViewItem currentContainer = treeView.ItemContainerGenerator.ContainerFromItem(lastModel) as TreeViewItem;
                 currentContainer.IsExpanded = true;
-                //currentContainer.Background = System.Windows.Media.Brushes.IndianRed;
             }
         }
 

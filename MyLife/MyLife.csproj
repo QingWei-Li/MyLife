@@ -108,6 +108,9 @@
     <Compile Include="Helper\XamlHelper.cs" />
     <Compile Include="Helper\SQLiteHelper.cs" />
     <Compile Include="Model\SettingModel.cs" />
+    <Compile Include="UI\CountWindow.xaml.cs">
+      <DependentUpon>CountWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\ExportWindow.xaml.cs">
       <DependentUpon>ExportWindow.xaml</DependentUpon>
     </Compile>
@@ -119,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Style\Light.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\CountWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

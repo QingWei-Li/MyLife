@@ -9,10 +9,10 @@ namespace MyLife.Helper
 {
     class SearchHelper
     {
-        private static List<TextRange> FindAllMatchedTextRanges(RichTextBox richBox, string keyword)
+        private static List<TextRange> FindAllMatchedTextRanges(FlowDocument fd, string keyword)
         {
             List<TextRange> trList = new List<TextRange>();
-            TextPointer position = richBox.Document.ContentStart;
+            TextPointer position = fd.ContentStart;
             while (position != null)
             {
                 if (position.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
@@ -40,13 +40,22 @@ namespace MyLife.Helper
             return trList;
         }
 
-        public static void ReplaceKeywordColor(RichTextBox richBox, string keyword)
+        public static void ReplaceKeywordColor(FlowDocument fd, string keyword)
         {
-            List<TextRange> trList = FindAllMatchedTextRanges(richBox, keyword);
+            List<TextRange> trList = FindAllMatchedTextRanges(fd, keyword);
             foreach (TextRange tr in trList)
             {
                 tr.ApplyPropertyValue(TextElement.BackgroundProperty, System.Windows.Media.Brushes.IndianRed);
             }
+        }
+
+        public static bool isFindMatchedTextRanges(FlowDocument fd, string keyword)
+        {
+            TextRange tr = new TextRange(fd.ContentStart, fd.ContentEnd);
+            if (tr.Text.IndexOf(keyword) < 0)
+                return false;
+            else
+                return true;
         }
     }
 }

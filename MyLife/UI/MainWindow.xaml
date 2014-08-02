@@ -50,7 +50,7 @@
         <Grid Style="{DynamicResource gridStyle}" Name="gridToolBar" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Stretch">
             <StackPanel Name="ToolBar"  VerticalAlignment="Center" Visibility="Hidden">
                 <Button Style="{DynamicResource btnSideBar}" Content="保存" Name="btnSave" Click="btnSave_Click"></Button>
-                <Button Style="{DynamicResource btnSideBar}" Content="统计" Name="btnCount"></Button>
+                <Button Style="{DynamicResource btnSideBar}" Content="统计" Name="btnCount" Click="btnCount_Click"></Button>
                 <Button Style="{DynamicResource btnSideBar}" Content="设置" Name="btnSet" Click="btnSet_Click"></Button>
                 <Button Style="{DynamicResource btnSideBar}" Content="导出" Name="btnExport" Click="btnExport_Click"></Button>
                 <Button Style="{DynamicResource btnSideBar}" Content="灯光" Name="btnLight" Click="btnLight_Click"></Button>

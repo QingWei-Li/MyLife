@@ -210,6 +210,11 @@ namespace MyLife
             UI.ExportWindow expwin = new UI.ExportWindow();
             expwin.ShowDialog();
         }
+        private void btnCount_Click(object sender, RoutedEventArgs e)
+        {
+            UI.CountWindow win = new UI.CountWindow();
+            win.ShowDialog();
+        }
 
         private void girdSideBar_MouseEnter(object sender, MouseEventArgs e)
         {
@@ -249,12 +254,7 @@ namespace MyLife
         private void tvSideBar_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             Model.TreeModel model = (Model.TreeModel)tvSideBar.SelectedItem;
-            //如何改变树面板的某项背景色
-            //Model.TreeModel model2 = (Model.TreeModel)tvSideBar.Items[0];
-            //object model3 = tvSideBar.ItemContainerGenerator.ContainerFromItem(tvSideBar.SelectedItem);
-            //TreeViewItem currentContainer = tvSideBar.ItemContainerGenerator.ContainerFromItem(tvSideBar.SelectedItem) as TreeViewItem;
-            //currentContainer.Background = System.Windows.Media.Brushes.IndianRed;
-            
+
             if (model.PID > 0)
             {
                 rtbEdit.Document.Blocks.Clear();
@@ -263,17 +263,52 @@ namespace MyLife
 
                 if (tbSearch.Text.Trim() != String.Empty)
                 {
-                    Helper.SearchHelper.ReplaceKeywordColor(rtbEdit, tbSearch.Text.Trim());
+                    Helper.SearchHelper.ReplaceKeywordColor(rtbEdit.Document, tbSearch.Text.Trim());
                 }
             }
         }
         private void tbSearch_KeyDown(object sender, KeyEventArgs e)
         {
+            if (tbSearch.Text.Trim().Length <= 0)
+            {
+                e.Handled = true;
+                return;
+            }
             if (e.Key == Key.Enter)
             {
+                BindTree();
                 TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
                 textRange.ApplyPropertyValue(TextElement.BackgroundProperty, rtbEdit.Background);
-                Helper.SearchHelper.ReplaceKeywordColor(rtbEdit, tbSearch.Text.Trim());
+                Helper.SearchHelper.ReplaceKeywordColor(rtbEdit.Document, tbSearch.Text.Trim());
+
+                //搜索其他时间带有关键字的日记
+                DAL.DiaryDAL dal = new DAL.DiaryDAL();
+                List<Model.DiaryModel> listModel = dal.ListAll().ToList();
+                List<Model.TreeModel> listTreeView = tvSideBar.ItemsSource as List<Model.TreeModel>;
+                List<Model.TreeModel> listTreeSrc = new DAL.TreeDAL().ListAll().ToList();
+
+                foreach (Model.DiaryModel model in listModel)
+                {
+                    FlowDocument fd = Helper.XamlHelper.FromXaml(model.Contents);
+                    bool isFind = Helper.SearchHelper.isFindMatchedTextRanges(fd, tbSearch.Text.Trim());
+
+                    if (isFind)
+                    {
+                        Model.TreeModel nodeSrc = listTreeSrc.Find(delegate(Model.TreeModel t) { return t.DiaID == model.ID; });
+                        Model.TreeModel tvModel = listTreeView.Find(delegate(Model.TreeModel t) { return t.ID == nodeSrc.PID; });
+                        Model.TreeModel tvNodeModel = tvModel.Nodes.Find(delegate(Model.TreeModel t) { return t.DiaID == nodeSrc.DiaID; });
+
+                        TreeViewItem currentContainer = tvSideBar.ItemContainerGenerator.ContainerFromItem(tvModel) as TreeViewItem;
+                        currentContainer.SetValue(TreeViewItem.IsExpandedProperty, true);
+                        currentContainer.UpdateLayout();
+
+                        TreeViewItem tvitem = currentContainer.ItemContainerGenerator.ContainerFromItem(tvNodeModel) as TreeViewItem;
+                        tvitem.Background = System.Windows.Media.Brushes.IndianRed;
+
+                    }
+
+                }
+
             }
         }
         private void tbSearch_GotFocus(object sender, RoutedEventArgs e)

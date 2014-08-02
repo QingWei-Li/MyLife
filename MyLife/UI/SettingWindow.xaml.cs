@@ -108,5 +108,10 @@ namespace MyLife.UI
             System.Diagnostics.Process.Start("https://github.com/QingWei-Li/MyLife");
         }
 
+        private void linkHelp_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.zybuluo.com/leecinwell/note/25337");
+        }
+
     }
 }

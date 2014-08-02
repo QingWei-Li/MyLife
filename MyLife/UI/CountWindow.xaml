@@ -1,0 +1,32 @@
+﻿<Window x:Class="MyLife.UI.CountWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                Title="统计信息" Height="350" Width="400" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow" MinHeight="350" MaxHeight="350" MaxWidth="400" MinWidth="400">
+    <Grid Style="{DynamicResource gridStyle}">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Grid.Row="1">日记总篇数</TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="2">平均记日记间隔</TextBlock>
+
+            <TextBlock Grid.Column="1" Grid.Row="1" Name="totalDiaryCount">NaN 篇</TextBlock>
+            <TextBlock Grid.Column="1" Grid.Row="2" Name="avgDiaryTime">NaN 天</TextBlock>
+
+            <TextBlock Grid.ColumnSpan="2" Grid.Row="4" HorizontalAlignment="Center">其他统计信息正在构思中...</TextBlock>
+            
+            <Button Grid.Column="1" Grid.Row="5" Content="关闭" Height="30" Width="100" HorizontalAlignment="Right" Name="btnClose" Click="btnClose_Click"></Button>
+
+        </Grid>
+    </Grid>
+</Window>
