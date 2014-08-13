@@ -55,7 +55,6 @@
   <ItemGroup>
     <Reference Include="OpenPop">
       <HintPath>..\packages\OpenPop.NET.2.0.6.1069\lib\net40\OpenPop.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

@@ -20,6 +20,8 @@ namespace MyLife
     {
         private string DiaryTime = DateTime.Now.ToString("yyyy-MM-dd");
         private BackgroundWorker backgroundWorker = new BackgroundWorker();
+        private System.Timers.Timer timer = new System.Timers.Timer();
+        const int COUNTDOWN = 3 * 60 * 1000;
         private static int countAll = 0;
 
         public MainWindow()
@@ -95,6 +97,10 @@ namespace MyLife
                     backgroundWorker.RunWorkerAsync();
                     SaveEdit();
                     this.rtbEdit.Focus();
+                    timer.Interval = COUNTDOWN;
+                    timer.Elapsed += timer_Elapsed;
+                    timer.AutoReset = false;
+                    timer.Start();
 
                     EditWindow.MouseDown -= PasswordFocus;
                     EditWindow.MouseDown += EditWindow_MouseDown;
@@ -112,8 +118,18 @@ namespace MyLife
             }
         }
 
+        private void timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            //超过规定时间无内容输入就重启程序，达到锁定程序的目的
+            System.Diagnostics.Process.Start(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            this.Dispatcher.Invoke(new Action(() => { Application.Current.Shutdown(); }));
+        }
+
+
         private void rtbEdit_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            timer.Interval = COUNTDOWN;
+
             if (e.Key == Key.V && (Keyboard.Modifiers & (ModifierKeys.Control)) == (ModifierKeys.Control))
             {
                 if (Clipboard.ContainsImage())
