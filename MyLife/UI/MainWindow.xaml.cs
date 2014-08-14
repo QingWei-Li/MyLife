@@ -62,7 +62,7 @@ namespace MyLife
         {
             if (Helper.SQLiteHelper.ConStr.Password.Length > 0)
             {
-                SaveEdit();
+                SaveAndUpdate();
             }
         }
         private void PasswordFocus(object sender, MouseButtonEventArgs e)
@@ -95,7 +95,7 @@ namespace MyLife
                     gridEdit.Children.Remove(pswLogin);
                     InitData();
                     backgroundWorker.RunWorkerAsync();
-                    SaveEdit();
+                    SaveAndUpdate();
                     this.rtbEdit.Focus();
                     timer.Interval = COUNTDOWN;
                     timer.Elapsed += timer_Elapsed;
@@ -168,7 +168,7 @@ namespace MyLife
                 if (count > countAll + 10 || count < countAll - 10)
                 {
                     countAll = count;
-                    SaveEdit();
+                    SaveAndUpdate();
                 }
             }
 
@@ -193,7 +193,7 @@ namespace MyLife
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            SaveEdit();
+            SaveAndUpdate();
         }
         private void btnLight_Click(object sender, RoutedEventArgs e)
         {
@@ -222,7 +222,7 @@ namespace MyLife
         }
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            SaveEdit();
+            SaveAndUpdate();
             UI.ExportWindow expwin = new UI.ExportWindow();
             expwin.ShowDialog();
         }
@@ -270,6 +270,7 @@ namespace MyLife
         private void tvSideBar_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             Model.TreeModel model = (Model.TreeModel)tvSideBar.SelectedItem;
+            Save();
 
             if (model.PID > 0)
             {
@@ -360,12 +361,17 @@ namespace MyLife
             TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
             textRange.ApplyPropertyValue(TextElement.ForegroundProperty, rtbEdit.Foreground);
         }
-        private void SaveEdit()
+        private void SaveAndUpdate()
+        {
+            Save();
+            BindTree();
+        }
+
+        private void Save()
         {
             TextRange textRange = new TextRange(rtbEdit.Document.ContentStart, rtbEdit.Document.ContentEnd);
             textRange.ApplyPropertyValue(TextElement.BackgroundProperty, rtbEdit.Background);
             bool isok = new BLL.DiaryBLL().Save(this.rtbEdit.Document, DiaryTime);
-            BindTree();
         }
         private static void SideBarAnimation(Panel sideBar, int from, int to, ThicknessAnimation ta)
         {
